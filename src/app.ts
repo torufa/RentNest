@@ -4,6 +4,13 @@ import config from "./config";
 import cookieParser from "cookie-parser";
 import { userRoutes } from "./modules/user/user.route";
 import { authRoutes } from "./modules/auth/auth.route";
+import { propertiesRoutes } from "./modules/properties/properties.route";
+import { categoriesRoutes } from "./modules/categories/categories.route";
+import { landlordRoutes } from "./modules/landlord/landlord.route";
+import { rentalsRoutes } from "./modules/rentals/rentals.route";
+import { paymentsRoutes } from "./modules/payments/payments.route";
+import { reviewsRoutes } from "./modules/reviews/reviews.route";
+import { adminRoutes } from "./modules/admin/admin.route";
 
 const app: Application = express();
 
@@ -23,5 +30,13 @@ app.get("/", (req: Request, res: Response) => {
 
 app.use("/api/auth", authRoutes)
 app.use("/api/user", userRoutes)
+
+app.use("/api/properties", propertiesRoutes)
+app.use("/api/categories", categoriesRoutes)
+app.use("/api/landlord", landlordRoutes)
+app.use("/api/rentals", rentalsRoutes)
+app.use("/api/payments", paymentsRoutes)
+app.use("/api/reviews", reviewsRoutes)
+app.use("/api/admin", adminRoutes)
 
 export default app;

@@ -1,6 +1,6 @@
 model Categories{
     id String @id @default(uuid())
-    categoryName String @db.VarChar(255)
+    categoryName String @db.VarChar(255) @unique
 
     properties Properties[]
 

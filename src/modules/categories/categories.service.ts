@@ -1,21 +1,16 @@
 import { prisma } from "../../lib/prisma";
-import { RegisterUserPayload } from "./categories.interface";
 
-const registerUserIntoDB = async(payload: RegisterUserPayload) => {
-    
+const createCategoriesIntoDB = async(categoryName: string) => {    
 
-    // const result = await prisma.user.create({
-    //     data: {
-    //         name,
-    //         email,
-    //         password,
-    //         description
-    //     }
-    // })
+    const result = await prisma.categories.create({
+        data: {
+            categoryName
+        }
+    })
 
-    // return result;
+    return result;
 }
 
 export const categoriesService = {
-    registerUserIntoDB
+    createCategoriesIntoDB
 }

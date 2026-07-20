@@ -31,13 +31,13 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 app.use("/api/auth", authRoutes)
+app.use("/api/categories", categoriesRoutes)
 app.use("/api/landlord", landlordRoutes)
 app.use("/api/properties", propertiesRoutes)
 
 
 app.use("/api/user", userRoutes)
 
-app.use("/api/categories", categoriesRoutes)
 app.use("/api/rentals", rentalsRoutes)
 app.use("/api/payments", paymentsRoutes)
 app.use("/api/reviews", reviewsRoutes)

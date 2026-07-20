@@ -4,9 +4,9 @@ import { sendResponse } from "../../utils/sendResponse"
 import { catchAsync } from "../../utils/catchAsync"
 import { categoriesService } from "./categories.service"
 
-const registerUser = catchAsync(async(req: Request, res: Response) => {
-    const payload = req.body
-    const result = await categoriesService.registerUserIntoDB(payload)
+const createCategories = catchAsync(async(req: Request, res: Response) => {
+    const {categoryName} = req.body
+    const result = await categoriesService.createCategoriesIntoDB(categoryName)
     sendResponse(res, {
         success: true,
         statusCode: httpStatus.CREATED,
@@ -17,5 +17,5 @@ const registerUser = catchAsync(async(req: Request, res: Response) => {
 
 
 export const categoriesController = {
-    
+    createCategories
 }

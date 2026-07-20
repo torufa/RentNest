@@ -1,10 +1,10 @@
-import { Request, Response } from "express"
+import { NextFunction, Request, Response } from "express"
 import httpStatus from "http-status"
 import { sendResponse } from "../../utils/sendResponse"
 import { catchAsync } from "../../utils/catchAsync"
 import { auhtService } from "./auth.service"
 
-const registerUser = catchAsync(async(req: Request, res: Response) => {
+const registerUser = catchAsync(async(req: Request, res: Response, next: NextFunction) => {
     const payload = req.body
     const result = await auhtService.registerUserIntoDB(payload)
     sendResponse(res, {
@@ -15,7 +15,7 @@ const registerUser = catchAsync(async(req: Request, res: Response) => {
     }) 
 })
 
-const loginUser = catchAsync(async(req: Request, res: Response)=>{
+const loginUser = catchAsync(async(req: Request, res: Response, next: NextFunction)=>{
     const payload = req.body
     const {accessToken, refreshToken} = await auhtService.loginUserIntoDB(payload)
     
@@ -40,13 +40,45 @@ const loginUser = catchAsync(async(req: Request, res: Response)=>{
     }) 
 })
 
+const refreshToken = catchAsync(async (req : Request, res : Response, next: NextFunction) => {
+    const refreshToken = req.cookies.refreshToken;
+
+    const {accessToken} = await auhtService.refreshToken(refreshToken);
+
+    res.cookie("accessToken", accessToken, {
+        httpOnly: true,
+        secure: false,
+        sameSite: "none",
+        maxAge: 1000 * 60 * 60 * 24
+    })
+
+    sendResponse(res, {
+        success : true,
+        statusCode : httpStatus.OK,
+        message : "Access token refreshed successfully",
+        data : {accessToken}
+    })
+})
+
+const getCurrentUser = catchAsync(async(req: Request, res: Response, next: NextFunction)=>{
+    const result = await auhtService.getCurrentUserFromDB(req.user?.id as string);
+
+    sendResponse(res, {
+        success: true,
+        statusCode: httpStatus.OK,
+        message: "Current user retrieved successfully",
+        data: { result }
+    })
+})
 
 
 
-// const loginUser = catchAsync(async(req: Request, res: Response)=>{
+// const loginUser = catchAsync(async(req: Request, res: Response, next: NextFunction)=>{
     
 // })
 export const authController = {
     registerUser,
-    loginUser
+    loginUser,
+    refreshToken,
+    getCurrentUser
 }

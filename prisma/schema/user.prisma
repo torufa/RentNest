@@ -4,7 +4,7 @@ model User{
     email String @unique @db.VarChar(255)
     password String @db.VarChar(255)
     description String?
-    role UserRole @default(USER)
+    role UserRole @default(TENANT)
     accountStatus AccountStatus @default(ACTIVE)
 
     properties Properties[]

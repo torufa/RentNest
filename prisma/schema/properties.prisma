@@ -1,9 +1,9 @@
 model Properties{
     id String @id @default(uuid())
     propertyName String @db.VarChar(255)
-    picture String
+    picture String?
     description String 
-    amenities String[]
+    amenities String[] @default([])
     location String
     price Decimal @db.Decimal(10,2)
     status PropertyStatus @default(AVAILABLE)

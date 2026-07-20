@@ -6,7 +6,8 @@ import { landlordService } from "./landlord.service"
 
 const createProperty = catchAsync(async(req: Request, res: Response) => {
     const payload = req.body
-    const result = await landlordService.createPropertyIntoDB(payload)
+    const userId = req.user?.id as string
+    const result = await landlordService.createPropertyIntoDB(userId, payload)
     sendResponse(res, {
         success: true,
         statusCode: httpStatus.CREATED,

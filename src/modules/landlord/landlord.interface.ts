@@ -1,10 +1,12 @@
-import { AccountStatus, UserRole } from "../../../generated/prisma/enums";
+import { PropertyStatus } from "../../../generated/prisma/enums";
 
-export interface RegisterUserPayload{
-    name: string;
-    email: string;
-    password: string;
-    description?: string;
-    role: UserRole;
-    accountStatus : AccountStatus
+export interface createPropertyPayload{
+    propertyName: string;
+    picture?: string;
+    description: string;
+    amenities: string[];
+    location: string;
+    price : number;
+    status?: PropertyStatus;
+    categoryId: string;
 }

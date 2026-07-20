@@ -11,7 +11,7 @@ const createProperty = catchAsync(async(req: Request, res: Response) => {
     sendResponse(res, {
         success: true,
         statusCode: httpStatus.CREATED,
-        message: "User registered successfully",
+        message: "Property listing created successfully",
         data: {result}
     }) 
 })

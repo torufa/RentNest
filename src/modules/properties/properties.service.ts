@@ -1,21 +1,17 @@
 import { prisma } from "../../lib/prisma";
-import { RegisterUserPayload } from "./properties.interface";
 
-const getAllPropertiesFromDB = async(payload: RegisterUserPayload) => {
-    
+const getPropertyByIdFromDB = async(propertyId: string) => {   
 
-    // const result = await prisma.user.create({
-    //     data: {
-    //         name,
-    //         email,
-    //         password,
-    //         description
-    //     }
-    // })
+    const result = await prisma.properties.findUniqueOrThrow({
+        where: {id: propertyId},
+        include: {
+            reviews: true
+        }
+    })
 
-    // return result;
+    return result;
 }
 
 export const propertiesService = {
-    getAllPropertiesFromDB
+    getPropertyByIdFromDB
 }

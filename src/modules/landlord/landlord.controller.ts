@@ -1,10 +1,10 @@
-import { Request, Response } from "express"
+import { NextFunction, Request, Response } from "express"
 import httpStatus from "http-status"
 import { sendResponse } from "../../utils/sendResponse"
 import { catchAsync } from "../../utils/catchAsync"
 import { landlordService } from "./landlord.service"
 
-const createProperty = catchAsync(async(req: Request, res: Response) => {
+const createProperty = catchAsync(async(req: Request, res: Response, next: NextFunction) => {
     const payload = req.body
     const userId = req.user?.id as string
     const result = await landlordService.createPropertyIntoDB(userId, payload)
@@ -16,26 +16,26 @@ const createProperty = catchAsync(async(req: Request, res: Response) => {
     }) 
 })
 
-const updateProperty = catchAsync(async(req: Request, res: Response) => {
+const updateProperty = catchAsync(async(req: Request, res: Response, next: NextFunction) => {
     const payload = req.body
     const userId = req.user?.id as string
     const {id} = req.params
     const result = await landlordService.updatePropertyIntoDB(userId, id as string, payload)
     sendResponse(res, {
         success: true,
-        statusCode: httpStatus.CREATED,
+        statusCode: httpStatus.OK,
         message: "Property listing updated successfully",
         data: {result}
     }) 
 })
 
-const deleteProperty = catchAsync(async(req: Request, res: Response) => {
+const deleteProperty = catchAsync(async(req: Request, res: Response, next: NextFunction) => {
     const userId = req.user?.id as string
     const {id} = req.params
     const result = await landlordService.deletePropertyFromDB(userId, id as string)
     sendResponse(res, {
         success: true,
-        statusCode: httpStatus.CREATED,
+        statusCode: httpStatus.OK,
         message: "Property listing deleted  successfully",
         data: {result}
     }) 

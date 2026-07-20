@@ -4,9 +4,9 @@ import { sendResponse } from "../../utils/sendResponse"
 import { catchAsync } from "../../utils/catchAsync"
 import { propertiesService } from "./properties.service"
 
-const registerUser = catchAsync(async(req: Request, res: Response) => {
+const getAllProperties = catchAsync(async(req: Request, res: Response) => {
     const payload = req.body
-    const result = await propertiesService.registerUserIntoDB(payload)
+    const result = await propertiesService.getAllPropertiesFromDB(payload)
     sendResponse(res, {
         success: true,
         statusCode: httpStatus.CREATED,
@@ -17,5 +17,5 @@ const registerUser = catchAsync(async(req: Request, res: Response) => {
 
 
 export const propertiesController = {
-    
+    getAllProperties
 }

@@ -1,4 +1,4 @@
-import express, { Application, Request, Response, urlencoded } from "express";
+import express, { Application, NextFunction, Request, Response } from "express";
 import cors from "cors";
 import config from "./config";
 import cookieParser from "cookie-parser";
@@ -11,6 +11,8 @@ import { rentalsRoutes } from "./modules/rentals/rentals.route";
 import { paymentsRoutes } from "./modules/payments/payments.route";
 import { reviewsRoutes } from "./modules/reviews/reviews.route";
 import { adminRoutes } from "./modules/admin/admin.route";
+import { notFound } from "./middleware/notFound";
+import { globalErrorHandler } from "./middleware/globalErrorHandler";
 
 const app: Application = express();
 
@@ -29,14 +31,19 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 app.use("/api/auth", authRoutes)
+app.use("/api/landlord", landlordRoutes)
+app.use("/api/properties", propertiesRoutes)
+
+
 app.use("/api/user", userRoutes)
 
-app.use("/api/properties", propertiesRoutes)
 app.use("/api/categories", categoriesRoutes)
-app.use("/api/landlord", landlordRoutes)
 app.use("/api/rentals", rentalsRoutes)
 app.use("/api/payments", paymentsRoutes)
 app.use("/api/reviews", reviewsRoutes)
 app.use("/api/admin", adminRoutes)
+
+app.use(notFound)
+app.use(globalErrorHandler)
 
 export default app;

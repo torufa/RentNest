@@ -71,11 +71,6 @@ const getCurrentUser = catchAsync(async(req: Request, res: Response, next: NextF
     })
 })
 
-
-
-// const loginUser = catchAsync(async(req: Request, res: Response, next: NextFunction)=>{
-    
-// })
 export const authController = {
     registerUser,
     loginUser,

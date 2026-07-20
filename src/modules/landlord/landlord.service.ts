@@ -44,7 +44,23 @@ const updatePropertyIntoDB = async(userId: string, propertyId: string, payload: 
     return updateProperty;
 }
 
+const deletePropertyFromDB = async(userId: string, propertyId: string) => {
+    const property = await prisma.properties.findUniqueOrThrow({
+        where: {id: propertyId}
+    })
+    if(property.userId !== userId){
+        throw new Error("You can only delete your own property listings.")
+    }
+
+    const updateProperty = await prisma.properties.delete({
+        where: {id: propertyId}
+    })
+
+    return updateProperty;
+}
+
 export const landlordService = {
     createPropertyIntoDB,
-    updatePropertyIntoDB
+    updatePropertyIntoDB,
+    deletePropertyFromDB
 }

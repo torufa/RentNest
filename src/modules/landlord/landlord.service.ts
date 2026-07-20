@@ -1,5 +1,5 @@
 import { prisma } from "../../lib/prisma";
-import { createPropertyPayload } from "./landlord.interface";
+import { createPropertyPayload, updatePropertyPayload } from "./landlord.interface";
 
 const createPropertyIntoDB = async(userId: string, payload: createPropertyPayload) => {
     const {propertyName, picture, description, amenities, location,price,status,categoryId} = payload
@@ -28,6 +28,23 @@ const createPropertyIntoDB = async(userId: string, payload: createPropertyPayloa
     return createProperty;
 }
 
+const updatePropertyIntoDB = async(userId: string, propertyId: string, payload: updatePropertyPayload) => {
+    const property = await prisma.properties.findUniqueOrThrow({
+        where: {id: propertyId}
+    })
+    if(property.userId !== userId){
+        throw new Error("You can only update your own property listings.")
+    }
+
+    const updateProperty = await prisma.properties.update({
+        where: {id: propertyId},
+        data:payload
+    })
+
+    return updateProperty;
+}
+
 export const landlordService = {
-    createPropertyIntoDB
+    createPropertyIntoDB,
+    updatePropertyIntoDB
 }

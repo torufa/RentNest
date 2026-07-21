@@ -9,4 +9,6 @@ router.post("/properties", auth(UserRole.LANDLORD), landlordController.createPro
 router.put("/properties/:id", auth(UserRole.LANDLORD), landlordController.updateProperty)
 router.delete("/properties/:id", auth(UserRole.LANDLORD), landlordController.deleteProperty)
 
+router.get("/requests", auth(UserRole.LANDLORD), landlordController.getRentalRequestsForLandlord)
+
 export const landlordRoutes = router;

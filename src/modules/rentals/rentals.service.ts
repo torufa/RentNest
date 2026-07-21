@@ -61,7 +61,20 @@ const getUserRentalRequestsFromDB = async(tenantId: string) => {
     return result
 }
 
+const getUserRentalRequestByIdFromDB = async(rentalRequestId: string, tenantId:string) => { 
+    const result = await prisma.rentalRequests.findUniqueOrThrow({
+        where: {
+            id: rentalRequestId,
+            customerId: tenantId
+        },
+        include: {property: true}
+    })
+
+    return result;
+}
+
 export const rentalsService = {
     createRentalRequestIntoDB,
-    getUserRentalRequestsFromDB
+    getUserRentalRequestsFromDB,
+    getUserRentalRequestByIdFromDB
 }

@@ -50,6 +50,18 @@ const createRentalRequestIntoDB = async(payload: createRentalRequestPayload, ten
     return result;
 }
 
+const getUserRentalRequestsFromDB = async(tenantId: string) => {
+    const result = await prisma.rentalRequests.findMany({
+        where: {customerId: tenantId},
+        include: {
+            property: true
+        }
+    })
+
+    return result
+}
+
 export const rentalsService = {
-    createRentalRequestIntoDB
+    createRentalRequestIntoDB,
+    getUserRentalRequestsFromDB
 }

@@ -16,7 +16,19 @@ const createRentalRequest  = catchAsync(async(req: Request, res: Response, next:
     }) 
 })
 
+const getUserRentalRequests  = catchAsync(async(req: Request, res: Response, next: NextFunction) => {
+    const userId = req.user?.id as string
+    const result = await rentalsService.getUserRentalRequestsFromDB(userId)
+    sendResponse(res, {
+        success: true,
+        statusCode: httpStatus.OK,
+        message: "Rental requests retrieved successfully.",
+        data: {result}
+    }) 
+})
+
 
 export const rentalsController = {
-    createRentalRequest 
+    createRentalRequest,
+    getUserRentalRequests
 }

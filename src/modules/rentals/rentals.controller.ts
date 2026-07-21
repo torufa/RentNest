@@ -4,18 +4,19 @@ import { sendResponse } from "../../utils/sendResponse"
 import { catchAsync } from "../../utils/catchAsync"
 import { rentalsService } from "./rentals.service"
 
-const registerUser = catchAsync(async(req: Request, res: Response, next: NextFunction) => {
+const createRentalRequest  = catchAsync(async(req: Request, res: Response, next: NextFunction) => {
     const payload = req.body
-    const result = await rentalsService.registerUserIntoDB(payload)
+    const userId = req.user?.id as string
+    const result = await rentalsService.createRentalRequestIntoDB(payload, userId)
     sendResponse(res, {
         success: true,
         statusCode: httpStatus.CREATED,
-        message: "User registered successfully",
+        message: "Rental request submitted successfully",
         data: {result}
     }) 
 })
 
 
 export const rentalsController = {
-    
+    createRentalRequest 
 }

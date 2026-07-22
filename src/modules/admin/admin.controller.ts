@@ -9,12 +9,47 @@ const getAllUser = catchAsync(async(req: Request, res: Response, next: NextFunct
     sendResponse(res, {
         success: true,
         statusCode: httpStatus.CREATED,
-        message: "User registered successfully",
+        message: "Users retrieved successfully.",
+        data: {result}
+    }) 
+})
+
+const updateUserStatus  = catchAsync(async(req: Request, res: Response, next: NextFunction) => {
+    const {id} = req.params
+    const {status} = req.body
+    const result = await adminService.updateUserStatusIntoDB(id as string, status)
+    sendResponse(res, {
+        success: true,
+        statusCode: httpStatus.OK,
+        message: "User status updated successfully.",
+        data: {result}
+    }) 
+})
+
+const getAllProperties = catchAsync(async(req: Request, res: Response, next: NextFunction) => {
+    const result = await adminService.getAllPropertiesFromDB()
+    sendResponse(res, {
+        success: true,
+        statusCode: httpStatus.OK,
+        message: "Properties retrieved successfully.",
+        data: {result}
+    }) 
+})
+
+const getAllRentals = catchAsync(async(req: Request, res: Response, next: NextFunction) => {
+    const result = await adminService.getAllRentalsFromDB()
+    sendResponse(res, {
+        success: true,
+        statusCode: httpStatus.OK,
+        message: "Properties retrieved successfully.",
         data: {result}
     }) 
 })
 
 
 export const adminController = {
-    getAllUser
+    getAllUser,
+    updateUserStatus,
+    getAllProperties,
+    getAllRentals
 }

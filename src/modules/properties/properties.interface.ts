@@ -10,5 +10,5 @@ export interface IPropertiesQuery extends PropertiesWhereInput{
 
     minPrice?: string;
     maxPrice?:string;
-    status: PropertyStatus
+    status?: PropertyStatus
 }

@@ -3,6 +3,7 @@ import httpStatus from "http-status"
 import { sendResponse } from "../../utils/sendResponse"
 import { catchAsync } from "../../utils/catchAsync"
 import { propertiesService } from "./properties.service"
+import { IPropertiesQuery } from "./properties.interface"
 
 const getPropertyById = catchAsync(async(req: Request, res: Response, next: NextFunction) => {
     const {id} = req.params

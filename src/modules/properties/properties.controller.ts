@@ -23,7 +23,7 @@ const getAllProperties = catchAsync(async(req: Request, res: Response, next: Nex
     sendResponse(res, {
         success: true,
         statusCode: httpStatus.OK,
-        message: "Property details retrieved successfully",
+        message: "Properties retrieved successfully",
         data: {result}
     }) 
 })

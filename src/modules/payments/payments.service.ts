@@ -1,7 +1,7 @@
 import { prisma } from "../../lib/prisma";
 import { RegisterUserPayload } from "./payments.interface";
 
-const registerUserIntoDB = async(payload: RegisterUserPayload) => {
+const createPaymentSessionIntoDB = async(payload: RegisterUserPayload) => {
     
 
     // const result = await prisma.user.create({
@@ -17,5 +17,5 @@ const registerUserIntoDB = async(payload: RegisterUserPayload) => {
 }
 
 export const paymentsService = {
-    registerUserIntoDB
+    createPaymentSessionIntoDB
 }

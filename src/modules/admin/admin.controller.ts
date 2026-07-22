@@ -4,9 +4,8 @@ import { sendResponse } from "../../utils/sendResponse"
 import { catchAsync } from "../../utils/catchAsync"
 import { adminService } from "./admin.service"
 
-const registerUser = catchAsync(async(req: Request, res: Response, next: NextFunction) => {
-    const payload = req.body
-    const result = await adminService.registerUserIntoDB(payload)
+const getAllUser = catchAsync(async(req: Request, res: Response, next: NextFunction) => {
+    const result = await adminService.getAllUserFromDB()
     sendResponse(res, {
         success: true,
         statusCode: httpStatus.CREATED,
@@ -17,5 +16,5 @@ const registerUser = catchAsync(async(req: Request, res: Response, next: NextFun
 
 
 export const adminController = {
-    
+    getAllUser
 }

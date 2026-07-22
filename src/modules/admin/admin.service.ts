@@ -1,21 +1,25 @@
 import { prisma } from "../../lib/prisma";
-import { RegisterUserPayload } from "./admin.interface";
 
-const registerUserIntoDB = async(payload: RegisterUserPayload) => {
-    
+const getAllUserFromDB = async() => {   
 
-    // const result = await prisma.user.create({
-    //     data: {
-    //         name,
-    //         email,
-    //         password,
-    //         description
-    //     }
-    // })
+    const result = await prisma.user.findMany({
+        where: {
+            OR: [
+                {role: "LANDLORD"},
+                {role: "TENANT"}
+            ]
+        },
+        omit: {
+            password: true
+        },
+        orderBy: {
+            role: "desc"
+        }
+    })
 
-    // return result;
+    return result;
 }
 
 export const adminService = {
-    registerUserIntoDB
+    getAllUserFromDB
 }

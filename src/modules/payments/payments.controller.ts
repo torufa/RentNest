@@ -4,9 +4,9 @@ import { sendResponse } from "../../utils/sendResponse"
 import { catchAsync } from "../../utils/catchAsync"
 import { paymentsService } from "./payments.service"
 
-const registerUser = catchAsync(async(req: Request, res: Response, next: NextFunction) => {
+const createPaymentSession = catchAsync(async(req: Request, res: Response, next: NextFunction) => {
     const payload = req.body
-    const result = await paymentsService.registerUserIntoDB(payload)
+    const result = await paymentsService.createPaymentSessionIntoDB(payload)
     sendResponse(res, {
         success: true,
         statusCode: httpStatus.CREATED,
@@ -17,5 +17,5 @@ const registerUser = catchAsync(async(req: Request, res: Response, next: NextFun
 
 
 export const paymentsController = {
-    
+    createPaymentSession
 }

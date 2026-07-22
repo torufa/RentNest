@@ -32,3 +32,9 @@ enum PaymentsStatus {
     COMPLETED
     FAILED
 }
+
+enum PaymentMethod {
+  CARD
+  MOBILE_BANKING
+  BANK_TRANSFER
+}

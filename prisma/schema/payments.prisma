@@ -2,12 +2,12 @@ model Payments{
     id String @id @default(uuid())
     transactionId String @default(uuid()) @unique
 
-    rentalId String @unique
-    rental RentalRequests @relation(fields: [rentalId], references: [id], onDelete: Cascade)
-
-    status PaymentsStatus @default(PENDING)
+    rentalRequestId String @unique
+    rental RentalRequests @relation(fields: [rentalRequestId], references: [id], onDelete: Cascade)
 
     amount Decimal @db.Decimal(10,2)
+    method PaymentMethod @default(CARD)
+    status PaymentsStatus @default(PENDING)
     paidAt DateTime?
 
     createdAt DateTime @default(now())

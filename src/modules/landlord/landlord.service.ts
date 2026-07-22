@@ -1,5 +1,5 @@
 import { prisma } from "../../lib/prisma";
-import { createPropertyPayload, updatePropertyPayload } from "./landlord.interface";
+import { createPropertyPayload, updatePropertyPayload, UpdateRentalRequestStatusPayload } from "./landlord.interface";
 
 const createPropertyIntoDB = async(userId: string, payload: createPropertyPayload) => {
     const {propertyName, picture, description, amenities, location,price,status,categoryId} = payload
@@ -79,9 +79,42 @@ const getRentalRequestsForLandlordFromDB = async(landlordId: string) => {
     return result
 }
 
+const updateRentalRequestStatusIntoDB  = async(landlordId: string, rentalRequestId: string, status: UpdateRentalRequestStatusPayload['status'] ) => {
+    const rentalRequest = await prisma.rentalRequests.findUniqueOrThrow({
+        where: {
+            id: rentalRequestId
+        },
+        include: {
+            property: true
+        }
+    });
+
+    if (rentalRequest.property.userId !== landlordId) {
+        throw new Error(
+            "You can only manage rental request status for your own properties."
+        );
+    }
+    if (status !== "APPROVED" && status !== "REJECTED") {
+        throw new Error("Status must be either APPROVED or REJECTED.");
+    }
+
+
+    const result = await prisma.rentalRequests.update({
+        where: {
+            id: rentalRequestId
+        },
+        data: {
+            status 
+        }
+    })
+
+    return result
+}
+
 export const landlordService = {
     createPropertyIntoDB,
     updatePropertyIntoDB,
     deletePropertyFromDB,
-    getRentalRequestsForLandlordFromDB
+    getRentalRequestsForLandlordFromDB,
+    updateRentalRequestStatusIntoDB 
 }

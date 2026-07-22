@@ -21,3 +21,7 @@ export interface updatePropertyPayload{
     status?: PropertyStatus;
     categoryId?: string;
 }
+
+export interface UpdateRentalRequestStatusPayload {
+    status: "APPROVED" | "REJECTED";
+}

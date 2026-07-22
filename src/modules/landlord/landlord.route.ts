@@ -10,5 +10,6 @@ router.put("/properties/:id", auth(UserRole.LANDLORD), landlordController.update
 router.delete("/properties/:id", auth(UserRole.LANDLORD), landlordController.deleteProperty)
 
 router.get("/requests", auth(UserRole.LANDLORD), landlordController.getRentalRequestsForLandlord)
+router.patch("/requests/:id", auth(UserRole.LANDLORD), landlordController.updateRentalRequestStatus)
 
 export const landlordRoutes = router;

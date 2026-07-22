@@ -15,7 +15,20 @@ const getPropertyById = catchAsync(async(req: Request, res: Response, next: Next
     }) 
 })
 
+const getAllProperties = catchAsync(async(req: Request, res: Response, next: NextFunction) => {
+    const query = req.query
+    console.log(query)
+    const result = await propertiesService.getAllPropertiesFromDB(query)
+    sendResponse(res, {
+        success: true,
+        statusCode: httpStatus.OK,
+        message: "Property details retrieved successfully",
+        data: {result}
+    }) 
+})
+
 
 export const propertiesController = {
-    getPropertyById
+    getPropertyById,
+    getAllProperties
 }

@@ -1,7 +1,7 @@
 import { prisma } from "../../lib/prisma";
 
 const createCategoriesIntoDB = async(categoryName: string) => {    
-    const isCategoryExists = await prisma.categories.findUniqueOrThrow({
+    const isCategoryExists = await prisma.categories.findUnique({
         where: {categoryName}
     })
     if(isCategoryExists){
@@ -18,9 +18,13 @@ const createCategoriesIntoDB = async(categoryName: string) => {
 }
 
 const getAllCategoriesFromDB = async() => { 
-    const result = await prisma.categories.findMany({})
+    const categories = await prisma.categories.findMany({})
 
-    return result;
+    const countCategories = categories.length
+    return {
+        total: countCategories,
+        categories
+    };
 }
 
 export const categoriesService = {

@@ -1,6 +1,6 @@
 model Payments{
     id String @id @default(uuid())
-    transactionId String @default(uuid()) @unique
+    transactionId String @unique
 
     rentalRequestId String @unique
     rental RentalRequests @relation(fields: [rentalRequestId], references: [id], onDelete: Cascade)

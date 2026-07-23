@@ -1,10 +1,8 @@
-import { AccountStatus, UserRole } from "../../../generated/prisma/enums";
+import { ReviewsStatus } from "../../../generated/prisma/enums";
 
-export interface RegisterUserPayload{
-    name: string;
-    email: string;
-    password: string;
-    description?: string;
-    role: UserRole;
-    accountStatus : AccountStatus
+export interface CreateReviewPayload{
+    rentalRequestId: string;
+    review: string;
+    rating: number;
+    status: ReviewsStatus
 }

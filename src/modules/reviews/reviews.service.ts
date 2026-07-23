@@ -43,6 +43,9 @@ const createReviewIntoDB = async(tenantId: string, payload: CreateReviewPayload)
             status: ReviewsStatus.PUBLISHED,
             userId: tenantId,
             propertyId: rentalRequest.propertyId
+        },
+        include: {
+            property: true
         }
     });
 

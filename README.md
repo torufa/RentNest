@@ -7,6 +7,8 @@ A secure and scalable backend API for a rental property marketplace where landlo
 
 **🌐 Live API:**  https://rent-nest-xi.vercel.app/
 
+**🗄️ Database ER Diagram:** https://drawsql.app/teams/flash-plus/diagrams/rentnest
+
 **📬 API Collection:** `RentNest.postman_collection.json` *(Available in the project root)*
 
 ---

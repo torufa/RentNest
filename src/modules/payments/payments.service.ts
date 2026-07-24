@@ -6,70 +6,69 @@ import { handleCheckoutCompleted } from "./payments.utils";
 ;
 
 const createPaymentSessionIntoDB = async(tenantId: string, rentalRequestId: string) => {
-    const paymentSession = await prisma.$transaction(
-        async(tx) => {
-            
-            const rentalRequest = await tx.rentalRequests.findUniqueOrThrow({
-                where: {id: rentalRequestId},
-                include: {
-                    customer: true,
-                    property: true,
-                    payments: true
-                }
-            })
-            if(rentalRequest.customerId !== tenantId){
-                throw new Error("This rental request is not yours.")
-            }
-            if(rentalRequest.status !== RentalRequestsStatus.APPROVED){
-                throw new Error(`Only approved rental requests can be paid. Current status: ${rentalRequest.status}`)
-            }
-            if (
-                rentalRequest.payments?.status === PaymentsStatus.COMPLETED
-            ) {
-                throw new Error("Payment has already been completed.");
-            }
-
-            const session = await stripe.checkout.sessions.create({
-                line_items:[{
-                    price_data: {
-                        currency: "usd",
-                        product_data: {
-                            name: rentalRequest.property.propertyName,
-                            description: "Thanks for renting with RentNest!"
-                        },
-                        unit_amount:
-                            Number(rentalRequest.property.price) * 100
-                        },
-                        quantity: 1
-                }],
-                mode: "payment",
-                customer_email : rentalRequest.customer.email,
-                payment_method_types: ["card"],
-                success_url: `${config.APP_URL}/premium?success=true`,
-                cancel_url: `${config.APP_URL}/payment?success=false`,
-                metadata: {
-                    tenantId,
-                    rentalRequestId,
-                    amount: rentalRequest.property.price.toString()
-                }
-            })
-
-            return session.url
+    const rentalRequest = await prisma.rentalRequests.findUniqueOrThrow({
+        where: {id: rentalRequestId},
+        include: {
+            customer: true,
+            property: true,
+            payments: true
         }
-    )
+    })
+    if(rentalRequest.customerId !== tenantId){
+        throw new Error("This rental request is not yours.")
+    }
+    if(rentalRequest.status !== RentalRequestsStatus.APPROVED){
+        throw new Error(`Only approved rental requests can be paid. Current status: ${rentalRequest.status}`)
+    }
+    if (rentalRequest.payments?.status === PaymentsStatus.COMPLETED) {
+        throw new Error("Payment has already been completed.");
+    }        
 
+    const session = await stripe.checkout.sessions.create({
+        line_items:[{
+            price_data: {
+                currency: "usd",
+                product_data: {
+                    name: rentalRequest.property.propertyName,
+                    description: "Thanks for renting with RentNest!"
+                },
+                unit_amount:
+                    Number(rentalRequest.property.price) * 100
+            },
+            quantity: 1
+        }],
+        mode: "payment",
+        customer_email : rentalRequest.customer.email,
+        payment_method_types: ["card"],
+        success_url: `${config.APP_URL}/premium?success=true`,
+        cancel_url: `${config.APP_URL}/payment?success=false`,
+        metadata: {
+            tenantId,
+            rentalRequestId,
+            amount: rentalRequest.property.price.toString()
+        }
+    })
+
+    if(!session.url){
+        throw new Error("Failed to create payment session.")
+    }
     return{
-        paymentUrl : paymentSession
+        paymentUrl: session.url
     }
 }
 
 const handleWebhook = async(payload: Buffer, signature: string) => {
-    const endpointSecret = config.STRIPE_WEBHOOK_SECRET
-    const event = stripe.webhooks.constructEvent(
+    let event: Stripe.Event;
+    try {
+        event = stripe.webhooks.constructEvent(
         payload,
         signature,
-        endpointSecret
-    )
+        config.STRIPE_WEBHOOK_SECRET
+        );
+    } catch (error) {
+        throw new Error("Invalid webhook signature.");
+    }
+
     switch (event.type) {
         case 'checkout.session.completed':
             await handleCheckoutCompleted(event.data.object)

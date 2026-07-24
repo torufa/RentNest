@@ -10,11 +10,18 @@ export const handleCheckoutCompleted = async( session : Stripe.Checkout.Session)
     const transactionId = session.payment_intent as string;
     const amount = session.metadata?.amount;    
 
-    if(!tenantId || !rentalRequestId || !transactionId){
-        throw new Error("Payment verification failed. Missing required checkout session data")
+    if(!tenantId || !rentalRequestId || !transactionId || !amount){
+        return
     }
 
-    await prisma.$transaction(async(tx) =>{
+    await prisma.$transaction(async(tx)=>{
+        const existingPayment = await tx.payments.findUnique({
+            where:{rentalRequestId}
+        })
+        if(existingPayment?.status === PaymentsStatus.COMPLETED){
+            return
+        }
+
         await tx.rentalRequests.update({
             where : {id: rentalRequestId},
             data : {
@@ -23,20 +30,20 @@ export const handleCheckoutCompleted = async( session : Stripe.Checkout.Session)
         })  
         await tx.payments.upsert({
             where : {rentalRequestId},
-            update : {
-                transactionId : transactionId,
-                status : PaymentsStatus.COMPLETED,
-                paidAt: new Date()
-            },
-            create : {
+            update: {
                 transactionId,
+                status: PaymentsStatus.COMPLETED,
+                paidAt: new Date(),
+            },
+            create: {
                 rentalRequestId,
-                amount : Number(amount),
-                method : PaymentMethod.CARD,
-                status : PaymentsStatus.COMPLETED,
-                paidAt: new Date()
-            }
+                transactionId,
+                amount: Number(amount),
+                method: PaymentMethod.CARD,
+                status: PaymentsStatus.COMPLETED,
+                paidAt: new Date(),
+            },
         })
-    }
-)}
+    })
+}
 

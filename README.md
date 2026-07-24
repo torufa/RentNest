@@ -254,9 +254,3 @@ Rental Status → PAID
 **Torufa Toma**
 
 GitHub: https://github.com/torufa
-
----
-
-# 📄 License
-
-Developed for the Programming Hero Level-2 Assignment-4.

@@ -105,11 +105,7 @@ const getAllPropertiesFromDB = async(query: IPropertiesQuery) => {
                     categoryName: true
                 }
             },
-            user: {
-                select: {
-                    name: true
-                }
-            },
+            user: true,
             reviews: true
         },
 

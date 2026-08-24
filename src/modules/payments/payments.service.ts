@@ -80,12 +80,19 @@ const handleWebhook = async(payload: Buffer, signature: string) => {
 
 const getTenantPaymentsFromDB = async(tenantId: string) => {
     const payments = await prisma.payments.findMany({
-        where: {
-            rental:{
-                customerId: tenantId
-            }
-        }
-    })
+    where: {
+        rental: {
+            customerId: tenantId,
+        },
+    },
+    include: {
+        rental: {
+            include: {
+                property: true,
+            },
+        },
+    },
+});
 
     const countPayments = payments.length
     return {

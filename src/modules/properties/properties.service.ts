@@ -8,7 +8,8 @@ const getPropertyByIdFromDB = async(propertyId: string) => {
     const result = await prisma.properties.findUniqueOrThrow({
         where: {id: propertyId},
         include: {
-            reviews: true
+            reviews: true,
+            user: true
         }
     })
 

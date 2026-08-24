@@ -17,7 +17,7 @@ const getPropertyByIdFromDB = async(propertyId: string) => {
 
 const getAllPropertiesFromDB = async(query: IPropertiesQuery) => {  
 
-    const limit = query.limit ? Number(query.limit) : 5;
+    const limit = query.limit ? Number(query.limit) : 15;
     const page = query.page ? Number(query.page) : 1;
     const skip = (page - 1) * limit;
 

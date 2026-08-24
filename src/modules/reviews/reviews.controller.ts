@@ -16,7 +16,18 @@ const createReview = catchAsync(async(req: Request, res: Response, next: NextFun
     }) 
 })
 
+const getAllReviews  = catchAsync(async(req: Request, res: Response, next: NextFunction) => {
+    const userId = req.user?.id as string
+    const result = await reviewsService.getMyReviewsFromDB(userId)
+    sendResponse(res, {
+        success: true,
+        statusCode: httpStatus.OK,
+        message: "Rental requests retrieved successfully.",
+        data: {result}
+    }) 
+})
 
 export const reviewsController = {
-    createReview
+    createReview,
+    getAllReviews
 }

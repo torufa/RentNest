@@ -52,6 +52,22 @@ const createReviewIntoDB = async(tenantId: string, payload: CreateReviewPayload)
     return result;
 }
 
+const getMyReviewsFromDB = async(tenantId: string) => {
+    const rentalRequests = await prisma.reviews.findMany({
+        where: {userId: tenantId},
+        include: {
+            property: true
+        }
+    })
+
+    const countRentalRequests = rentalRequests.length
+    return {
+        total: countRentalRequests,
+        result : {rentalRequests}
+    }
+}
+
 export const reviewsService = {
-    createReviewIntoDB
+    createReviewIntoDB,
+    getMyReviewsFromDB
 }

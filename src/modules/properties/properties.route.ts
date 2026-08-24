@@ -6,4 +6,4 @@ const router = Router()
 router.get("/:id", propertiesController.getPropertyById)
 router.get("/", propertiesController.getAllProperties)
 
-export const propertiesRoutes = router;
+export const propertiesRoutes:Router = router;

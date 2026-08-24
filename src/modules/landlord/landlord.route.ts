@@ -8,8 +8,9 @@ const router = Router()
 router.post("/properties", auth(UserRole.LANDLORD), landlordController.createProperty)
 router.put("/properties/:id", auth(UserRole.LANDLORD), landlordController.updateProperty)
 router.delete("/properties/:id", auth(UserRole.LANDLORD), landlordController.deleteProperty)
+router.get("/properties", auth(UserRole.LANDLORD), landlordController.getLandlordsProperties)
 
 router.get("/requests", auth(UserRole.LANDLORD), landlordController.getRentalRequestsForLandlord)
 router.patch("/requests/:id", auth(UserRole.LANDLORD), landlordController.updateRentalRequestStatus)
 
-export const landlordRoutes = router;
+export const landlordRoutes:Router = router;

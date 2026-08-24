@@ -9,4 +9,4 @@ router.post("/", auth(UserRole.TENANT), rentalsController.createRentalRequest)
 router.get("/", auth(UserRole.TENANT), rentalsController.getUserRentalRequests)
 router.get("/:id", auth(UserRole.TENANT), rentalsController.getUserRentalRequestById)
 
-export const rentalsRoutes = router;
+export const rentalsRoutes:Router = router;

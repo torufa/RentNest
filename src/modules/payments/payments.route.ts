@@ -10,4 +10,4 @@ router.post("/confirm", paymentsController.handleWebhookPayment)
 router.get("/", auth(UserRole.TENANT), paymentsController.getTenantPayments)
 router.get("/:id", auth(UserRole.TENANT), paymentsController.getTenantPaymentsById)
 
-export const paymentsRoutes = router;
+export const paymentsRoutes:Router = router;

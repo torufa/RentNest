@@ -8,4 +8,4 @@ const router = Router()
 router.post("/create", auth(UserRole.ADMIN), categoriesController.createCategories)
 router.get("/", categoriesController.getAllCategories)
 
-export const categoriesRoutes = router;
+export const categoriesRoutes:Router = router;

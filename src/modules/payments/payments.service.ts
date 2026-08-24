@@ -40,7 +40,7 @@ const createPaymentSessionIntoDB = async(tenantId: string, rentalRequestId: stri
         mode: "payment",
         customer_email : rentalRequest.customer.email,
         payment_method_types: ["card"],
-        success_url: `${config.APP_URL}/premium?success=true`,
+        success_url: `${config.APP_URL}/premium?success=true&rentalRequestId=${rentalRequestId}`,
         cancel_url: `${config.APP_URL}/payment?success=false`,
         metadata: {
             tenantId,
@@ -68,7 +68,7 @@ const handleWebhook = async(payload: Buffer, signature: string) => {
     } catch (error) {
         throw new Error("Invalid webhook signature.");
     }
-
+  console.log("STRIPE WEBHOOK EVENT:", event.type);
     switch (event.type) {
         case 'checkout.session.completed':
             await handleCheckoutCompleted(event.data.object)
